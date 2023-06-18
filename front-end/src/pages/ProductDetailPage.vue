@@ -53,7 +53,7 @@ export default {
       const email = prompt('Please enter your email to sign in:');
       const auth = getAuth();
       const actionCodeSettings = {
-        url: `https://vue-project-3k4i.onrender.com/products/${this.$route.params.productId}`,
+        url: `https://vue-project-e4cn.onrender.com/products/${this.$route.params.productId}`,
         handleCodeInApp: true,
       }
       await sendSignInLinkToEmail(auth, email, actionCodeSettings);
