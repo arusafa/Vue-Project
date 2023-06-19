@@ -1,15 +1,16 @@
 <template>
   <div v-if="product">
-      <div class="img-wrap">
-        <img :src="product.imageUrl" />
-      </div>
-      <div class="product-details">
-        <h1>{{ product.name }}</h1>
-        <h3 class="price">{{ product.price }}</h3>
-        <button @click="addToCart" class="add-to-cart" v-if="user && !itemIsInCart">Add to cart</button>
-        <button class="grey-button" v-if="user && itemIsInCart">Item is already in cart</button>
-        <button class="sign-in" @click="signIn" v-if="!user">Sign in to add to cart</button>
-      </div>
+    <div class="img-wrap">
+      <img :src="product.imageUrl" />
+    </div>
+    <div class="product-details">
+      <h1>{{ product.name }}</h1>
+      <h3 class="price">{{ product.price }}</h3>
+      <button @click="addToCart" class="add-to-cart" v-if="user && !itemIsInCart">Add to cart</button>
+      <button class="grey-button" v-if="user && itemIsInCart">Item is already in cart</button>
+      <button class="sign-up" @click="signUp" v-if="!user">Sign up</button>
+      <button class="login" @click="login" v-if="!user">Login</button>
+    </div>
   </div>
   <div v-else>
     <NotFoundPage />
@@ -17,7 +18,7 @@
 </template>
 
 <script>
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
 import NotFoundPage from './NotFoundPage.vue';
 
@@ -59,6 +60,28 @@ export default {
       await sendSignInLinkToEmail(auth, email, actionCodeSettings);
       alert('A login link was sent to the email you provided');
       window.localStorage.setItem('emailForSignIn', email);
+    },
+    async signUp() {
+      const auth = getAuth();
+      const email = prompt('Please enter your email to sign up:');
+      const password = prompt('Please enter your password to sign up:');
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert('Successfully signed up!');
+      } catch (error) {
+        alert(`Error in sign up: ${error.message}`);
+      }
+    },
+    async login() {
+      const auth = getAuth();
+      const email = prompt('Please enter your email to login:');
+      const password = prompt('Please enter your password to login:');
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert('Successfully logged in!');
+      } catch (error) {
+        alert(`Error in login: ${error.message}`);
+      }
     }
   },
   components: {

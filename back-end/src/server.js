@@ -1,9 +1,11 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import path from "path";
+import dotenv from 'dotenv';
+dotenv.config(); // This line loads environment variables from .env file
 
 async function start() {
-  const url = `mongodb+srv://arusafa:aruSAFA1993@cluster0.xpzxbve.mongodb.net/?retryWrites=true&w=majority`;
+  const url = process.env.MONGODB_URI;
   const client = new MongoClient(url);
 
   await client.connect();
